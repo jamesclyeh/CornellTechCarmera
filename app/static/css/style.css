@@ -80,6 +80,8 @@ h3 {
 
 .content-wrapper {
 	display: flex;
+	transition: height .3s linear, padding-top .3s linear, padding-bottom .3s linear, border-width .3s linear;
+
 
 
 }
@@ -133,6 +135,7 @@ button {
 	color: white;
 	border: none;
 	outline: none;
+	bottom: 0;
 }
 .save {
 	background-color: #43CB40;
@@ -145,7 +148,14 @@ button {
 	background-color: #8F8F8F;
 	width: 50%;
 	height: 40px;
-
+}
+.filter {
+	background-color: #39BFFE;
+	width: 60%;
+	height: 40px;
+	top: 50px;
+	right: 0;
+	position: absolute;
 
 }
 
