@@ -16,7 +16,7 @@ class FakeDB(Singleton):
     with open('images/data.json') as f:
       self.data = json.load(f)
       for d in self.data:
-        self.images.append(Image(d['id'], d['captured_on'], d['lat'], d['lon'], d['tags']))
+        self.images.append(Image(d['id'], d['captured_on'], d['lat'], d['lon'], d['tags'], d))
 
   def FilterByDate(self, days):
     diff = datetime.now() + datetime.timedelta(-days)
@@ -29,19 +29,23 @@ class FakeDB(Singleton):
     return filter(lambda x: tags & set([t['tag'] for t in x.tags]), self.images)
 
 class Image:
-  FAKE_TAGS = ['bike', 'taxi', 'tree', 'pedastrian', 'store']
-  def __init__(self, image_id, captured_on, lat, lon, tags):
+  FAKE_TAGS = ['Pine trees', 'Fire hydrants', 'Handicap accessible entrances',
+      'Construction', 'Subway stops', 'Everygreen trees', 'Retail shops']
+
+  def __init__(self, image_id, captured_on, lat, lon, tags, json):
     self.image_id = image_id
     self.captured_on = parser.parse(captured_on)
     self.lat = lat
     self.lon = lon
+    self.json = json
     if tags:
       self.tags = tags
     else:
       self.tags = []
       for tag in self.FAKE_TAGS:
-        if random.random() < 0.5:
+        if random.random() < 0.3:
           self.tags.append({'tag': tag, 'h': 0, 'w': 0, 'x': 0, 'y': 0})
+    self.json['tags'] = self.tags
 
   def GetTags(self):
     return [t['tag'] for t in self.tags]

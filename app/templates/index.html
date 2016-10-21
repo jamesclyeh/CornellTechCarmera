@@ -69,27 +69,17 @@
 				<div id="sug">
 					<h3>Suggested Tags</h3>
 					<ul id="suggested_tags_list" class="tags">
-						<li class="suggested_tag">Pine trees +</li>
-						<li class="suggested_tag">Fire hydrants +</li>
-						<li class="suggested_tag">Handicap accessible entrances +</li>
-						<li class="suggested_tag">Construction +</li>
-            <li class="suggested_tag">Subway stops +</li>
-						<li class="suggested_tag">Everygreen trees +</li>
-						<li class="suggested_tag">Retail shops +</li>
-						<li class="suggested_tag">Delis +</li>
+            {% for tag in all_tags %}
+              <li class="suggested_tag">{{'%s +' % tag}}</li>
+            {% endfor %}
 					</ul>
 				</div>
 				<div id="sel">
 					<h3>Selected Tags</h3>
 					<ul id="selected_tags_list" class="tags">
-            <li class="selected_tag">Pine trees x</li>
-						<li class="selected_tag">Fire hydrants x</li>
-						<li class="selected_tag">Handicap accessible entrances x</li>
-						<li class="selected_tag">Construction x</li>
-						<li class="selected_tag">Subway stops x</li>
-						<li class="selected_tag">Everygreen trees x</li>
-						<li class="selected_tag">Retail shops x</li>
-						<li class="selected_tag">Delis x</li>
+            {% for tag in all_tags %}
+              <li class="selected_tag">{{'%s -' % tag}}</li>
+            {% endfor %}
 					</ul>
 				</div>
 
@@ -106,14 +96,18 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
 <script>
   L.mapbox.accessToken = 'pk.eyJ1IjoiamFtZXNjbHllaCIsImEiOiJjaXVqN2NpdzkwMGF6MnVucXlvdzJpODdiIn0.Ag-NcIZ9BEc_79IczpLVEg';
-  var map = L.mapbox.map('mapbox', 'mapbox.streets').setView([40.7409227, -74.0016876], 20);
   //var map = new L.Map({
   //  container: 'mapbox', // container id
   //  style: 'mapbox://styles/mapbox/streets-v9', //stylesheet location
   //  center: [-74.0016876, 40.7409227], // starting position
   //  zoom: 15 // starting zoom
   //});
+  var images = {{ data|tojson }};
+  var map = L.mapbox.map('mapbox', 'mapbox.streets').setView([40.7409227, -74.0016876], 20);
+  var markerLayer;
+
   $(document).ready(function(){
+    updateMarker(images);
     $("#selected_tags_list li").hide();
     $("li.suggested_tag").click(function(){
       var tag_name = $(this).html().slice(0, -2);
@@ -125,9 +119,9 @@
       });
       $(this).hide();
     });
+
     $("li.selected_tag").click(function(){
       var tag_name = $(this).html().slice(0, -2);
-      console.log(tag_name)
       $("#suggested_tags_list li").each(function(){
         var liText = $(this).text().slice(0, -2);
         console.log(liText);
@@ -137,20 +131,52 @@
       });
       $(this).hide();
     });
+
+    $(".save").click(function(){
+	    info.style.display = "none";
+	    results.style.display = "block";
+      filterByTags()
+      updateMarker(images)
+    });
   });
 
-
-  var images = {{ data|tojson }};
-  var geocodes = []
-  for(i = 0; i < images.length; i++) {
-    geocodes.push({type: 'Feature',
-    geometry: {
-      type: 'Point',
-      coordinates: [images[i]['lon'], images[i]['lat']]
+  function filterByTags() {
+    var selected = []
+    $("#selected_tags_list li").each(
+      function() {
+        console.log($(this).text())
+        console.log($(this).css('display'))
+        if ($(this).css('display') != 'none') {
+          selected.push($(this).text().slice(0, -2))
+        }
+      });
+    $.ajax({
+      type: "POST",
+      url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
+      success: function (result) {
+        images = JSON.parse(result)
       },
-    properties: {
-      'marker-color': '#63b6e5'}})}
-  var myLayer = L.mapbox.featureLayer().setGeoJSON(geocodes).addTo(map);
+      async: false
+    });
+  }
+
+  function updateMarker(images) {
+    if (markerLayer != null) {
+      markerLayer.clearLayers();
+    }
+    var geocodes = []
+    for (i = 0; i < images.length; i++) {
+      // console.log(images[i])
+      geocodes.push({type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [images[i]['lon'], images[i]['lat']]
+        },
+        properties: {'marker-color': '#63b6e5'}})
+    }
+    markerLayer= L.mapbox.featureLayer().setGeoJSON(geocodes).addTo(map);
+  }
+
 
 </script>
 </body>
