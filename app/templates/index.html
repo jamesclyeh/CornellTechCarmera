@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
   <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
 </head>
 <body>
@@ -66,20 +67,28 @@
 				<input type="text" name="taginfo"><br>
 				<div id="sug">
 					<h3>Suggested Tags</h3>
-					<ul class="tags">
-						<li>Pine trees +</li>
-						<li>Fire hydrants +</li>
-						<li>Handicap accessible entrances +</li>
-						<li>Construction +</li>
+					<ul id="suggested_tags_list" class="tags">
+						<li class="suggested_tag">Pine trees +</li>
+						<li class="suggested_tag">Fire hydrants +</li>
+						<li class="suggested_tag">Handicap accessible entrances +</li>
+						<li class="suggested_tag">Construction +</li>
+            <li class="suggested_tag">Subway stops +</li>
+						<li class="suggested_tag">Everygreen trees +</li>
+						<li class="suggested_tag">Retail shops +</li>
+						<li class="suggested_tag">Delis +</li>
 					</ul>
 				</div>
 				<div id="sel">
 					<h3>Selected Tags</h3>
-					<ul class="tags">
-						<li>Subway stops x</li>
-						<li>Everygreen trees x</li>
-						<li>Retail shops x</li>
-						<li>Delis x</li>
+					<ul id="selected_tags_list" class="tags">
+            <li class="selected_tag">Pine trees x</li>
+						<li class="selected_tag">Fire hydrants x</li>
+						<li class="selected_tag">Handicap accessible entrances x</li>
+						<li class="selected_tag">Construction x</li>
+						<li class="selected_tag">Subway stops x</li>
+						<li class="selected_tag">Everygreen trees x</li>
+						<li class="selected_tag">Retail shops x</li>
+						<li class="selected_tag">Delis x</li>
 					</ul>
 				</div>
 
@@ -100,6 +109,33 @@
   //  center: [-74.0016876, 40.7409227], // starting position
   //  zoom: 15 // starting zoom
   //});
+  $(document).ready(function(){
+    $("#selected_tags_list li").hide();
+    $("li.suggested_tag").click(function(){
+      var tag_name = $(this).html().slice(0, -2);
+      console.log(tag_name)
+      $("#selected_tags_list li").each(function(){
+        var liText = $(this).text();
+        if(liText.indexOf(tag_name) == 0)
+          $(this).show();
+      });
+      $(this).hide();
+    });
+    $("li.selected_tag").click(function(){
+      var tag_name = $(this).html().slice(0, -2);
+      console.log(tag_name)
+      $("#suggested_tags_list li").each(function(){
+        var liText = $(this).text().slice(0, -2);
+        console.log(liText);
+        console.log(liText.indexOf(tag_name))
+        if(liText.indexOf(tag_name) == 0)
+          $(this).show();
+      });
+      $(this).hide();
+    });
+  });
+
+
   var images = {{ data|tojson }};
   var geocodes = []
   for(i = 0; i < images.length; i++) {
