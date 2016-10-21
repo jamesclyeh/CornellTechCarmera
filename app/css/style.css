@@ -1,0 +1,159 @@
+body {
+	font-family: Lato;
+	margin: 0;
+	font-size: 15px;
+	font-weight: 300;
+	line-height: 25px;
+	padding: 0;
+}
+
+header {
+	z-index: 10;
+	height: 50px;
+	background-color: #383838;
+	top: 0;
+	}
+ul {
+	padding-left: 0px;
+}
+li {
+	display: inline-block;
+/*	border: 1px solid black;*/
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-radius: 25px;
+	margin-right: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-weight: 300;
+	color: white;
+}
+
+
+h1 {
+	font-size: 24px;
+	line-height: 14px;
+}
+h3 {
+	font-size: 20px;
+	line-height: 0px;
+	font-weight: 400;
+}
+#carmera {
+	font-size: 24px;
+	color: #FFF;
+	line-height: 24px;
+	font-weight: 300;
+	padding: 13px 0;
+	vertical-align: top;
+	margin: 0;
+
+	text-transform: uppercase;
+	display: inline-block;
+
+}
+
+#dataExplorer {
+	font-size: 12px;
+	font-weight: 300;
+	line-height: 12px;
+	color: #FFF;
+	vertical-align: middle;
+}
+
+#beta {
+	color: #f58e26;
+	font-weight: 500;
+}
+
+.logo {
+	width: 80px;
+	height: 50px;
+	background-image: url("img/carmera.png");
+	background-size: 60px 26px;
+	background-repeat: no-repeat;
+	background-position: center;
+	display: inline-block;
+}
+
+.content-wrapper {
+	display: flex;
+
+
+}
+
+#mapbox {
+	flex: 0 1 40%;
+	background-color: orange;
+
+
+}
+
+#informationWrapper {
+	flex: 0 1 60%;	
+
+}
+
+.sub-content-wrapper {
+	margin: 20px;
+	margin-top: 6px;
+	display: flex;
+	border-bottom: 0.5px rgba(0,0,0,0.1) solid;
+	padding-bottom: 20px;
+}
+
+.tag-wrapper {
+	margin: 20px;
+}
+
+#area-content {
+	flex: 0 1 50%;
+
+}
+
+#time {
+	flex: 0 1 50%;
+
+}
+
+#sug li {
+	background-color: #39BFFE;
+}
+#sel li{
+	background-color: #F5A623;
+}
+
+button {
+	font-weight: 400;
+	font-family: Lato;
+	font-size: 20px;
+	color: white;
+	border: none;
+	outline: none;
+}
+.save {
+	background-color: #43CB40;
+	width: 50%;
+	height: 40px;
+
+}
+
+.cancel {
+	background-color: #8F8F8F;
+	width: 50%;
+	height: 40px;
+
+
+}
+
+
+
+
+
+
+
+
+
+

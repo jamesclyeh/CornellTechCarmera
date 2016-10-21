@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <form action="/echo" method="POST">
+      <input name="text">
+      <input type="submit" value="Echo">
+    </form>
+    {% for image in images %}
+    <img src="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" style="width:304px;height:228px;"/>
+    {% endfor %}
+  </body>
+</html>
