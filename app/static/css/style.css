@@ -97,7 +97,7 @@ h3 {
 #informationWrapper {
 	flex: 0 1 60%;
 	background-color: #F6F6F6;
-	min-height: 630px;
+	min-height: 100vh;
 
 }
 
@@ -141,19 +141,22 @@ button {
 }
 .save {
 	background-color: #43CB40;
-	width: 50%;
+	width: 30%;
 	height: 40px;
 	margin-top: 5px;
 	bottom: 0;
+	position: fixed;
 
 }
 
 .cancel {
 	background-color: #8F8F8F;
-	width: 50%;
+	width: 30%;
 	height: 40px;
 	margin-top: 5px;
 	bottom: 0;
+	position: fixed;
+	right: 0
 }
 .filter {
 	background-color: #39BFFE;
