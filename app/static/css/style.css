@@ -87,12 +87,13 @@ h3 {
 #mapbox {
 	flex: 0 1 40%;
 	background-color: orange;
-
-
+  top:0;
+  bottom:0;
+  width:100%;
 }
 
 #informationWrapper {
-	flex: 0 1 60%;	
+	flex: 0 1 60%;
 
 }
 

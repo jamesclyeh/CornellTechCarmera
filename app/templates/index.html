@@ -5,6 +5,8 @@
 	<title>Sprint 2 Carmera</title>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.26.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.26.0/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body>
 	<header>
@@ -88,11 +90,15 @@
 	</div>
 
 
-
-
-
-
-
 <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNjbHllaCIsImEiOiJjaXVqN2NpdzkwMGF6MnVucXlvdzJpODdiIn0.Ag-NcIZ9BEc_79IczpLVEg';
+  var map = new mapboxgl.Map({
+    container: 'mapbox', // container id
+    style: 'mapbox://styles/mapbox/streets-v9', //stylesheet location
+    center: [-74.0016876, 40.7409227], // starting position
+    zoom: 15 // starting zoom
+  });
+</script>
 </body>
 </html>
