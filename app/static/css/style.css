@@ -98,7 +98,12 @@ h3 {
 	flex: 0 1 60%;
 	background-color: #F6F6F6;
 	min-height: 100vh;
+}
 
+#imageWrap {
+  margin-top: 55px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .sub-content-wrapper {

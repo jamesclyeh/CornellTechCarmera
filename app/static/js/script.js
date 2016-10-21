@@ -4,15 +4,13 @@ let results = document.querySelector('#results');
 let filter = document.querySelector('.filter');
 
 cancel.addEventListener('click', function(){
-
-	console.log("clicked");
 	info.style.display = "none";
 	results.style.display = "block";
+  $('#imageWrap').show();
 });
 
 filter.addEventListener('click', function(){
-
-	console.log("clicked");
 	info.style.display = "block";
 	results.style.display = "none";
+  $('#imageWrap').hide();
 });

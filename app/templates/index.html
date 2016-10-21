@@ -19,6 +19,11 @@
 	<div class="content-wrapper">
 		<div id="mapbox"></div>
 		<div id="informationWrapper">
+    <div id="imageWrap">
+      {% for image in images %}
+      <img src="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" style="width:210px;height:210px;"/>
+      {% endfor %}
+    </div>
 		<div id="infoWrap">
 			<div class="sub-content-wrapper">
 				<div id="area-content">
@@ -107,6 +112,7 @@
   var markerLayer;
 
   $(document).ready(function(){
+    $('#imageWrap').hide();
     updateMarker(images);
     $("#selected_tags_list li").hide();
     $("li.suggested_tag").click(function(){
@@ -135,8 +141,10 @@
     $(".save").click(function(){
 	    info.style.display = "none";
 	    results.style.display = "block";
-      filterByTags()
-      updateMarker(images)
+      filterByTags();
+      updateMarker(images);
+      updateImages(images);
+      $('#imageWrap').show();
     });
   });
 
@@ -144,17 +152,15 @@
     var selected = []
     $("#selected_tags_list li").each(
       function() {
-        console.log($(this).text())
-        console.log($(this).css('display'))
         if ($(this).css('display') != 'none') {
-          selected.push($(this).text().slice(0, -2))
+          selected.push($(this).text().slice(0, -2));
         }
       });
     $.ajax({
       type: "POST",
       url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
       success: function (result) {
-        images = JSON.parse(result)
+        images = JSON.parse(result);
       },
       async: false
     });
@@ -177,6 +183,15 @@
     markerLayer= L.mapbox.featureLayer().setGeoJSON(geocodes).addTo(map);
   }
 
+  function updateImages(images) {
+    $("#imageWrap").children('img').each(function(){
+      $(this).hide();
+    });
+    for (i = 0; i < images.length; i++) {
+      console.log('#'+images[i].image_id)
+      $("img#"+images[i].id).show();
+    }
+  }
 
 </script>
 </body>
