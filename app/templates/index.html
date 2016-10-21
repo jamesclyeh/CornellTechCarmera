@@ -3,7 +3,7 @@
 <html>
 <head>
 	<title>Sprint 2 Carmera</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 	<header>
@@ -25,7 +25,7 @@
   							<input type="radio" name="area" value="radius"> An address: <input type="text" name="addressname"> and radius: <input type="text" name="radiusname"><br>
   							<input type="radio" name="area" value="city"> A city<br>
   							<input type="radio" name="area" value="neighborhood"> A neighborhood
-						</form>	
+						</form>
 					</div>
 					<div id="content">
 						<h1>Content</h1>
@@ -46,7 +46,7 @@
   							<input type="radio" name="area" value="30"> Last 30 days<br>
   							<input type="radio" name="area" value="7"> Last 7 days<br>
   							<input type="radio" name="area" value="range">  <input type="text" name="dayone"> to  <input type="text" name="daytwo">
-						</form>	
+						</form>
 					</div>
 					<div id="time-of-day">
 						<h3>Time of Day</h3>
@@ -92,6 +92,6 @@
 
 
 
-<script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}></script>
 </body>
 </html>
