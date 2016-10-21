@@ -47,7 +47,7 @@ class Image:
     return [t['tag'] for t in self.tags]
 
   def __repr__(self):
-    return '<Imgage %r>' % (self.image_id)
+    return '<Image %r>' % (self.image_id)
 
 class Tag:
   def __init__(self, tag, h=0, w=0, x=0, y=0):

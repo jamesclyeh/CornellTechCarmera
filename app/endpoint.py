@@ -8,7 +8,7 @@ print [(i.image_id, i.GetTags()) for i in tmp.images]
 
 @app.route("/")
 def hello():
-  return render_template('index.html', images=tmp.images)
+  return render_template('index.html', images=tmp.images, data=tmp.data)
 
 @app.route("/echo", methods=['POST'])
 def echo():
