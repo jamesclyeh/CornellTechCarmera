@@ -111,11 +111,7 @@
         //  center: [-74.0016876, 40.7409227], // starting position
         //  zoom: 15 // starting zoom
         //});
-        var images = {
-            {
-                data | tojson
-            }
-        };
+        var images = {{data | tojson}};
         var map = L.mapbox.map('mapbox', 'mapbox.streets').setView([40.7409227, -74.0016876], 20);
         var markerLayer;
 
