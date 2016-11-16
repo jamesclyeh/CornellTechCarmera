@@ -162,7 +162,6 @@
                         selected.push($(this).text().slice(0, -2));
                     }
                 });
-            console.log()
             if (selected.length == 1 && (selected[0]=='car'||selected[0]=='person')) {
                 $.ajax({
                     type: "POST",
@@ -206,6 +205,25 @@
             markerLayer = L.heatLayer(geocodes, {max: 15}).addTo(map);
         }
 
+        function aggregateTags(index) {
+            var agg = {};
+            for (i = 0; i < images[index].tags.length; i++)
+                if (!(images[index].tags[i].tag in agg)){
+                    agg[images[index].tags[i].tag] = 1;
+                } else {
+                    agg[images[index].tags[i].tag] += 1;
+                }
+            return agg;
+        }
+
+        function tagCountToStr(aggregate) {
+            content = '';
+            for (var k in aggregate) {
+                content += k + ': ' + aggregate[k] + '\n';
+            }
+            return content;
+        }
+
         function updateMarker(images) {
             if (markerLayer != null) {
                 map.removeLayer(markerLayer)
@@ -220,7 +238,8 @@
                     },
                     properties: {
                         'marker-color': '#63b6e5',
-                        'id': images[i].id
+                        'id': images[i].id,
+                        'index': i
                     }
                 })
             }
@@ -231,10 +250,12 @@
                 if (map) {
                     layerPopup = L.popup()
                        .setLatLng(swapped_coordinates)
-                       .setContent('Popup for image #'+e.layer.feature.properties.id)
+                       .setContent(tagCountToStr(aggregateTags(e.layer.feature.properties.index)))
                        .openOn(map);
 
                     document.getElementById(e.layer.feature.properties.id).scrollIntoView();
+                    document.getElementById(e.layer.feature.properties.id).style.border = "5px solid blue";
+                    document.body.scrollTop -= 200;
                 }
             });
 
@@ -242,6 +263,7 @@
                 if (layerPopup && map) {
                     map.closePopup(layerPopup);
                     layerPopup = null;
+                    document.getElementById(e.layer.feature.properties.id).style.border = "0px solid black";
                 }
             });
         }
