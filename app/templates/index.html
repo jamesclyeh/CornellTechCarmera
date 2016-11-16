@@ -231,10 +231,17 @@
                 if (map) {
                     layerPopup = L.popup()
                        .setLatLng(swapped_coordinates)
-                       .setContent('Popup for feature #'+e.layer.feature.properties.id)
+                       .setContent('Popup for image #'+e.layer.feature.properties.id)
                        .openOn(map);
 
                     document.getElementById(e.layer.feature.properties.id).scrollIntoView();
+                }
+            });
+
+            markerLayer.on('mouseout', function (e) {
+                if (layerPopup && map) {
+                    map.closePopup(layerPopup);
+                    layerPopup = null;
                 }
             });
         }
