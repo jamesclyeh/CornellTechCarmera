@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.lazyload.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/leaflet-heat.js') }}"></script>
     <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
 </head>
 
@@ -25,7 +27,7 @@
         <div id="informationWrapper">
             <div id="imageWrap">
                 {% for image in images %}
-                <img src="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" style="width:210px;height:210px;" /> {% endfor %}
+                <img class="lazy" data-original="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" style="width:210px;height:210px;" /> {% endfor %}
             </div>
             <div id="infoWrap">
                 <div class="sub-content-wrapper">
@@ -118,6 +120,9 @@
         $(document).ready(function() {
             $('#imageWrap').hide();
             updateMarker(images);
+            $(function() {
+                $("img.lazy").lazyload();
+            });
             $("#selected_tags_list li").hide();
             $("li.suggested_tag").click(function() {
                 var tag_name = $(this).html().slice(0, -2);
@@ -157,26 +162,56 @@
                         selected.push($(this).text().slice(0, -2));
                     }
                 });
-            $.ajax({
-                type: "POST",
-                url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
-                success: function(result) {
-                    images = JSON.parse(result);
-                    updateMarker(images);
-                    updateImages(images);
-                    $('#imageWrap').show();
-                },
-                async: true
-            });
+            console.log()
+            if (selected.length == 1 && (selected[0]=='car'||selected[0]=='person')) {
+                $.ajax({
+                    type: "POST",
+                    url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
+                    success: function(result) {
+                        images = JSON.parse(result);
+                        updateHeatmap(images, selected[0]);
+                        updateImages(images);
+                        $('#imageWrap').show();
+                    },
+                    async: true
+                });
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
+                    success: function(result) {
+                        images = JSON.parse(result);
+                        updateMarker(images);
+                        updateImages(images);
+                        $('#imageWrap').show();
+                    },
+                    async: true
+                });
+            }
+
+        }
+
+        function updateHeatmap(images, tag_name) {
+            if (markerLayer != null) {
+                map.removeLayer(markerLayer)
+            }
+            var geocodes = []
+            for (i = 0; i < images.length; i++) {
+                for (j = 0; j < images[i]['tags'].length; j++) {
+                    if (images[i]['tags'][j].tag == tag_name) {
+                        geocodes.push([images[i]['lat'], images[i]['lon']]);
+                    }
+                }
+            }
+            markerLayer = L.heatLayer(geocodes, {max: 15}).addTo(map);
         }
 
         function updateMarker(images) {
             if (markerLayer != null) {
-                markerLayer.clearLayers();
+                map.removeLayer(markerLayer)
             }
             var geocodes = []
             for (i = 0; i < images.length; i++) {
-                // console.log(images[i])
                 geocodes.push({
                     type: 'Feature',
                     geometry: {
@@ -184,11 +219,24 @@
                         coordinates: [images[i]['lon'], images[i]['lat']]
                     },
                     properties: {
-                        'marker-color': '#63b6e5'
+                        'marker-color': '#63b6e5',
+                        'id': images[i].id
                     }
                 })
             }
             markerLayer = L.mapbox.featureLayer().setGeoJSON(geocodes).addTo(map);
+            markerLayer.on('mouseover', function(e){
+                var coordinates = e.layer.feature.geometry.coordinates;
+                var swapped_coordinates = [coordinates[1], coordinates[0]];  //Swap Lat and Lng
+                if (map) {
+                    layerPopup = L.popup()
+                       .setLatLng(swapped_coordinates)
+                       .setContent('Popup for feature #'+e.layer.feature.properties.id)
+                       .openOn(map);
+
+                    document.getElementById(e.layer.feature.properties.id).scrollIntoView();
+                }
+            });
         }
 
         function updateImages(images) {
@@ -196,7 +244,6 @@
                 $(this).hide();
             });
             for (i = 0; i < images.length; i++) {
-                console.log('#' + images[i].image_id)
                 $("img#" + images[i].id).show();
             }
         }
