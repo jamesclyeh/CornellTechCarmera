@@ -66,8 +66,16 @@
                         <div id="time-of-day">
                             <h3>Time of Day</h3>
                             <form>
-                                <input type="checkbox" name="image" value="jpg" id="img"><label for="img"> Image</label><br>
-                                <input type="checkbox" name="video" value="mp4" id="vid"><label for="vid"> Video</label>
+                                <input type="checkbox" name="Morning" value="morning" id="time_morning">
+                                <label for="morning"> Morning (5:00am-11:00am)</label><br>
+                                <input type="checkbox" name="Noon" value="noon" id="time_noon">
+                                <label for="noon"> Noon (11:00am-2:00pm)</label><br>
+                                <input type="checkbox" name="Afternoon" value="afternoon" id="time_afternoon">
+                                <label for="afternoon"> Afternoon (2:00am-5:00pm)</label><br>
+                                <input type="checkbox" name="Evening" value="evening" id="time_evening">
+                                <label for="evening"> Evening (5:00pm-9:00pm)</label><br>
+                                <input type="checkbox" name="Night" value="night" id="time_night">
+                                <label for="night"> Night (9:00pm-5:00am)</label>
                             </form>
                         </div>
 
@@ -98,7 +106,7 @@
 
             </div>
             <div id="results" style="display: none;">
-                <p>5,000+ Results</p><button class="filter">Filter Options</button></div>
+                <p id="num_results">5,000+ Results</p><button class="filter">Filter Options</button></div>
 
         </div>
     </div>
@@ -116,13 +124,29 @@
         var images = {{data | tojson}};
         var map = L.mapbox.map('mapbox', 'mapbox.streets').setView([40.7409227, -74.0016876], 20);
         var markerLayer;
+        var markers;
 
         $(document).ready(function() {
+            $('#num_results').text(images.length + ' Results');
             $('#imageWrap').hide();
             updateMarker(images);
             $(function() {
                 $("img.lazy").lazyload();
             });
+
+            $(".lazy").hover(function(e) {
+                markers[e.currentTarget.id].setIcon(
+                    L.mapbox.marker.icon({
+                        'marker-color': '#f58b26'
+                    }));
+            }, function(e) {
+                markers[e.currentTarget.id].setIcon(
+                    L.mapbox.marker.icon({
+                        'marker-color': '#63b6e5'
+                    }));
+            });
+
+
             $("#selected_tags_list li").hide();
             $("li.suggested_tag").click(function() {
                 var tag_name = $(this).html().slice(0, -2);
@@ -162,7 +186,7 @@
                         selected.push($(this).text().slice(0, -2));
                     }
                 });
-            if (selected.length == 1 && (selected[0]=='car'||selected[0]=='person')) {
+            if (selected.length == 1 && (selected[0] == 'car' || selected[0] == 'person')) {
                 $.ajax({
                     type: "POST",
                     url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
@@ -180,6 +204,7 @@
                     url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
                     success: function(result) {
                         images = JSON.parse(result);
+                        $('#num_results').text(images.length + ' Results');
                         updateMarker(images);
                         updateImages(images);
                         $('#imageWrap').show();
@@ -202,13 +227,15 @@
                     }
                 }
             }
-            markerLayer = L.heatLayer(geocodes, {max: 15}).addTo(map);
+            markerLayer = L.heatLayer(geocodes, {
+                max: 15
+            }).addTo(map);
         }
 
         function aggregateTags(index) {
             var agg = {};
             for (i = 0; i < images[index].tags.length; i++)
-                if (!(images[index].tags[i].tag in agg)){
+                if (!(images[index].tags[i].tag in agg)) {
                     agg[images[index].tags[i].tag] = 1;
                 } else {
                     agg[images[index].tags[i].tag] += 1;
@@ -244,26 +271,41 @@
                 })
             }
             markerLayer = L.mapbox.featureLayer().setGeoJSON(geocodes).addTo(map);
-            markerLayer.on('mouseover', function(e){
+
+            markers = {};
+            markerLayer.eachLayer(function(marker) {
+                markers[marker.feature.properties.id] = marker;
+            });
+
+            markerLayer.on('mouseover', function(e) {
                 var coordinates = e.layer.feature.geometry.coordinates;
-                var swapped_coordinates = [coordinates[1], coordinates[0]];  //Swap Lat and Lng
+                var swapped_coordinates = [coordinates[1]+0.0001, coordinates[0]]; //Swap Lat and Lng
                 if (map) {
                     layerPopup = L.popup()
-                       .setLatLng(swapped_coordinates)
-                       .setContent(tagCountToStr(aggregateTags(e.layer.feature.properties.index)))
-                       .openOn(map);
+                        .setLatLng(swapped_coordinates)
+                        .setContent(tagCountToStr(aggregateTags(e.layer.feature.properties.index)))
+                        .openOn(map);
 
                     document.getElementById(e.layer.feature.properties.id).scrollIntoView();
-                    document.getElementById(e.layer.feature.properties.id).style.border = "5px solid blue";
+                    document.getElementById(e.layer.feature.properties.id).style.opacity = "0.5";
                     document.body.scrollTop -= 200;
+
+                    e.layer.setIcon(
+                    L.mapbox.marker.icon({
+                        'marker-color': '#f58b26'
+                    }));
                 }
             });
 
-            markerLayer.on('mouseout', function (e) {
+            markerLayer.on('mouseout', function(e) {
                 if (layerPopup && map) {
-                    map.closePopup(layerPopup);
-                    layerPopup = null;
-                    document.getElementById(e.layer.feature.properties.id).style.border = "0px solid black";
+                    //map.closePopup(layerPopup);
+                    //layerPopup = null;
+                    document.getElementById(e.layer.feature.properties.id).style.opacity = "1.0";
+                    e.layer.setIcon(
+                    L.mapbox.marker.icon({
+                        'marker-color': '#63b6e5'
+                    }));
                 }
             });
         }
