@@ -14,6 +14,10 @@ def hello():
   return render_template('index.html',
       images=tmp.images, data=tmp.data, all_tags=all_tags)
 
+@app.route("/test")
+def test():
+  return render_template('annotation.html', images=[tmp.images[0]])
+
 @app.route("/filterByTag", methods=['POST'])
 def filterByTag():
   print request.args['tags']

@@ -15,6 +15,31 @@ header {
 	position: fixed;
 	width: 100%;
 	}
+
+#side-nav {
+ 	background-color: #383838;
+ 	z-index: 9;
+ 	height: 100%;
+ 	position: fixed;
+ 	left: 0;
+ 	width: 50px;
+ 	top: 50px;
+ }
+
+#side-nav div {
+	width: 50px;
+	height: 50px;
+}
+
+#side-nav img {
+
+	padding-top: 10px;
+	padding-left: 10px;
+
+}
+#side-nav div:hover {
+	background-color: #43CB3F;
+}
 ul {
 	padding-left: 0px;
 }
@@ -97,19 +122,47 @@ h3 {
 width: 40%;
 float: left;
 position: fixed;
-	background-color: orange;
-  top:0;
-  bottom:0;
-  z-index: -1;
-  margin-top: 50px;
+background-color: orange;
+top:0;
+bottom:0;
+z-index: -1;
+margin-top: 50px;
 /*  width:100%;*/
+}
+
+#image-annotated {
+width: 77%;
+float: left;
+position: fixed;
+top:0;
+bottom:0;
+z-index: -1;
+margin-top: 50px;
+}
+
+#image-annotated img {
+	margin: 0;
+}
+
+#moreInfoWrapper {
+	width: 25%;
+	float: right;
+	position: relative;
+	background-color: #F6F6F6;
+	min-height: 100vh;
+	margin-top: 50px;
+	top: 50px;
+}
+
+#moreInfoWrapper #results {
+	top: 50px;
 }
 
 #informationWrapper {
 /*	flex: 0 1 60%;*/
-width: 60%;
-float: right;
-position: relative;
+	width: 60%;
+	float: right;
+	position: relative;
 	background-color: #F6F6F6;
 	min-height: 100vh;
 	margin-top: 50px;
@@ -214,6 +267,25 @@ button {
  	display: inline-block;
  	padding-left: 30px;
  }
+
+ #tags {
+ 	background-color: white;
+ 	width: 100%;
+ 	margin-bottom: 20px;
+ 	margin-top: 20px;
+ 	padding-left: 20px;
+ 	padding-top: 10px;
+ 	padding-bottom: 10px;
+ }
+
+  #sensor-data {
+ 	background-color: white;
+ 	width: 100%;
+ 	padding-left: 20px;
+ 	padding-top: 10px;
+ 	padding-bottom: 10px;
+ }
+
 
 
 
