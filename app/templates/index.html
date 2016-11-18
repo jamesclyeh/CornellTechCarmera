@@ -31,7 +31,7 @@
                 <a class="hover_a" id="a_{{image.image_id}}" href="/annotate/{{image.image_id}}">
                     <div style="position: relative; left: 0; top: 0;">
                         <img class="lazy" style="position: absolute;" data-original="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" />
-                        <div class="hover-wrapper" style="position: relative;">
+                        <div class="hover-wrapper" id="hover-wrapper-{{image.image_id}}" style="position: relative;">
                             <div class="overlay"></div>
                             <div class="hover-info">
                                 <p style="font-weight:bold;">Image ID</p>
@@ -157,16 +157,18 @@
                 $("img.lazy").lazyload();
             });
 
-            $(".lazy").hover(function(e) {
-                markers[e.currentTarget.id].setIcon(
+            $(".hover_a").hover(function(e) {
+                markers[e.currentTarget.id.slice(2)].setIcon(
                     L.mapbox.marker.icon({
                         'marker-color': '#f58b26'
                     }));
+                document.getElementById("hover-wrapper-"+e.currentTarget.id.slice(2)).style.opacity = "1.0";
             }, function(e) {
-                markers[e.currentTarget.id].setIcon(
+                markers[e.currentTarget.id.slice(2)].setIcon(
                     L.mapbox.marker.icon({
                         'marker-color': '#63b6e5'
                     }));
+                document.getElementById("hover-wrapper-"+e.currentTarget.id.slice(2)).style.opacity = "0.0"
             });
 
             $("#selected_tags_list li").hide();
@@ -309,9 +311,9 @@
                         .openOn(map);
 
                     document.getElementById(e.layer.feature.properties.id).scrollIntoView();
-                    document.getElementById(e.layer.feature.properties.id).style.opacity = "0.5";
+                    document.getElementById("hover-wrapper-"+e.layer.feature.properties.id).style.opacity = "1.0";
                     document.body.scrollTop -= 200;
-
+                    console.log("hover-wrapper-"+e.layer.feature.properties.id);
                     e.layer.setIcon(
                         L.mapbox.marker.icon({
                             'marker-color': '#f58b26'
@@ -323,7 +325,8 @@
                 if (layerPopup && map) {
                     //map.closePopup(layerPopup);
                     //layerPopup = null;
-                    document.getElementById(e.layer.feature.properties.id).style.opacity = "1.0";
+                    document.getElementById("hover-wrapper-"+e.layer.feature.properties.id).style.opacity = "0.0";
+                    console.log("hover-wrapper-"+e.layer.feature.properties.id);
                     e.layer.setIcon(
                         L.mapbox.marker.icon({
                             'marker-color': '#63b6e5'
