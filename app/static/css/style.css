@@ -24,18 +24,16 @@ header {
     left: 0;
     width: 50px;
     top: 50px;
-
-
 }
 
 #side-nav div {
-	width: 50px;
-	height: 50px;
-	transition: 0.3s;
+    width: 50px;
+    height: 50px;
+    transition: 0.3s;
 }
 
 .selected-button {
-	background-color: #43CB3F;
+    background-color: #43CB3F;
 }
 
 #side-nav img {
@@ -147,6 +145,15 @@ h3 {
     margin: 0;
 }
 
+#note_box {
+    outline: none;
+    padding-top: 0;
+    padding-left: 0;
+    line-height: 1em;
+    font-size: 18px;
+    font-family: "lato";
+}
+
 #moreInfoWrapper {
     width: 25%;
     float: right;
@@ -156,6 +163,16 @@ h3 {
     margin-top: 50px;
     top: 50px;
     overflow: hidden;
+}
+
+#moreInfoWrapper a {
+    font-weight: 400;
+    font-family: Lato;
+    font-size: 20px;
+    color: white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-decoration: none;
 }
 
 #moreInfoWrapper #results {
@@ -217,17 +234,15 @@ button {
 }
 
 #moreInfoWrapper a {
-	font-weight: 400;
-	font-family: Lato;
-	color: white;
-	text-align: center;
-	height: auto;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	text-decoration: none;
+    font-weight: 400;
+    font-family: Lato;
+    color: white;
+    text-align: center;
+    height: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-decoration: none;
 }
-
-
 
 .save {
     background-color: #43CB40;
@@ -309,41 +324,24 @@ button {
 }
 
 #results p {
- 	display: inline-block;
- 	padding-left: 30px;
- }
+    display: inline-block;
+    padding-left: 30px;
+}
 
- #tags {
- 	background-color: white;
- 	width: 100%;
- 	margin-bottom: 20px;
- 	margin-top: 20px;
- 	padding-left: 20px;
- 	padding-top: 10px;
- 	padding-bottom: 10px;
- }
+#tags {
+    background-color: white;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 
-  #sensor-data {
- 	background-color: white;
- 	width: 100%;
- 	padding-left: 20px;
- 	padding-top: 10px;
- 	padding-bottom: 10px;
- }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> Stashed changes
+#sensor-data {
+    background-color: white;
+    width: 100%;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
