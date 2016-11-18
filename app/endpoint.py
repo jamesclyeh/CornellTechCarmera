@@ -23,10 +23,7 @@ def annotate(image_id):
 
 @app.route("/filterByTag", methods=['POST'])
 def filterByTag():
-  print request.args['tags']
   tags = filter(lambda x: x != '', request.args['tags'].split(','))
-  print 'Filtering'
-  print tags
   images = tmp.FilterByTag(tags)
   print images
   return json.dumps([im.json for im in images])
