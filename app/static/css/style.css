@@ -8,7 +8,7 @@ body {
 }
 
 header {
-    z-index: 10;
+    z-index: 11;
     height: 50px;
     background-color: #383838;
     top: 0;
@@ -65,7 +65,7 @@ li {
 }
 
 img {
-    margin: 1px;
+/*    margin: 1px;*/
 }
 
 h1 {
@@ -128,6 +128,7 @@ h3 {
     bottom: 0;
     z-index: -1;
     margin-top: 50px;
+    left: 50px;
     /*  width:100%;*/
 }
 
@@ -167,6 +168,7 @@ h3 {
 
 #moreInfoWrapper #results {
     width: 25%;
+/*    top: 50px;*/
 }
 
 #moreInfoWrapper a {
@@ -177,6 +179,18 @@ h3 {
     padding-top: 5px;
     padding-bottom: 5px;
     text-decoration: none;
+}
+
+
+
+#results {
+	z-index: 10;
+}
+
+[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+
 }
 
 #informationWrapper {
@@ -275,6 +289,29 @@ button {
     margin-top: 10px;
     margin-bottom: 10px;
     right: 0;
+    transition: 0.3s;
+}
+
+.filter:hover {
+	opacity: 0.5;
+}
+
+.select {
+	background-color: #f58e26;
+    width: 120px;
+    height: 30px;
+    float: right;
+    font-size: 15px;
+    border-radius: 25px;
+    margin-right: 30px;
+    position: fixed;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    right: 150px;
+    transition: 0.3s;
+}
+.select:hover {
+	opacity: 0.5;
 }
 
 #results {
@@ -287,6 +324,10 @@ button {
     font-weight: 400;
     position: fixed;
     padding-top: 50px;
+}
+
+.hover_a {
+	width: 33.33333%;
 }
 
 #results p {
@@ -325,8 +366,8 @@ button {
 }
 
 .lazy {
-    width: 210px;
-    height: 210px;
+    width: 100%;
+    height: 100%;
 }
 
 #results p {
@@ -367,16 +408,22 @@ button {
 .overlay {
     position: absolute;
     background-color: black;
-    width: 210px;
-    height: 210px;
-    margin-left: 1px;
+    width: 100%;
+    height: 100%;
+/*    margin-left: 1px;*/
     opacity: 0.6;
+}
+.rad1{
+	position: absolute;
+	z-index: 1;
+	margin: 10px;
+	display: none;
 }
 
 .hover-wrapper {
     opacity: 0.0;
     position: absolute;
-    width: 210px;
+/*    width: 210px;*/
     height: 210px;
     transition: 0.3s;
 }

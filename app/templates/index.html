@@ -16,21 +16,29 @@
 <body>
     <header>
         <nav>
+        <a href="http://localhost:5000/">
             <div class="logo"></div>
             <div id="carmera">Carmera <span id="dataExplorer">Data Explorer <span id="beta">Beta</span></span>
             </div>
+        </a>
         </nav>
     </header>
-    <div id="side-nav"></div>
+    <div id="side-nav">
+        <div id="nav1"><img src="{{ url_for('static', filename='css/img/filter.png') }}" width="60%"></div>
+        <div id="nav2"><img src="{{ url_for('static', filename='css/img/data.png') }}" width="50%"></div>
+    </div>
 
     <div class="content-wrapper">
         <div id="mapbox"></div>
         <div id="informationWrapper">
             <div id="imageWrap">
                 {% for image in images %}
+
                 <a class="hover_a" id="a_{{image.image_id}}" href="/annotate/{{image.image_id}}">
                     <div style="position: relative; left: 0; top: 0;">
+
                         <img class="lazy" style="position: absolute;" data-original="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" />
+                        <input type="checkbox" class="rad1" name="radios"/>
                         <div class="hover-wrapper" id="hover-wrapper-{{image.image_id}}" style="position: relative;">
                             <div class="overlay"></div>
                             <div class="hover-info">
@@ -129,7 +137,7 @@
 
             </div>
             <div id="results" style="display: none;">
-                <p id="num_results">5,000+ Results</p><button class="filter">Filter Options</button></div>
+                <p id="num_results">5,000+ Results</p><button class="select" id="selector">Select Images</button><button class="filter">Filter Options</button></div>
 
         </div>
     </div>
@@ -162,7 +170,11 @@
                     L.mapbox.marker.icon({
                         'marker-color': '#f58b26'
                     }));
+                if(document.querySelector(".lazy").style.opacity != 0.5) {
                 document.getElementById("hover-wrapper-"+e.currentTarget.id.slice(2)).style.opacity = "1.0";
+                
+                
+            }
             }, function(e) {
                 markers[e.currentTarget.id.slice(2)].setIcon(
                     L.mapbox.marker.icon({
