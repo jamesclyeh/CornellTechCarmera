@@ -25,11 +25,12 @@
     </header>
 
     <div id="side-nav">
-        <div id="tag-button"><img src="{{ url_for('static', filename='css/img/tag.png') }}" width="60%"></div>
-        <div id="mark-button"><img src="{{ url_for('static', filename='css/img/mark.png') }}" width="60%" onclick="tagging();"></div>
+        <div id="tag-button"><img src="{{ url_for('static', filename='css/img/tag.png') }}" width="60%" onclick="tagging();"></div>
+        <div id="mark-button"><img src="{{ url_for('static', filename='css/img/mark.png') }}" width="60%" onclick="drawing();"></div>
     </div>
 
     <div id="image-annotated">
+        <div id="tagging_area"></div>
         <div id="drawing_pad"></div> {% for image in images %}
         <img src="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" style="width:100%;" /> {% endfor %}
     </div>
@@ -80,9 +81,139 @@
         sketchpad.pen().color("#f58b26");
         sketchpad.pen().width(5);
 
+        var paper = Raphael("tagging_area");
+        paper.setSize('100%', '100%');
+
+        // start, move, and up are the drag functions
+        start = function() {
+            // storing original coordinates
+            this.ox = this.attr("x");
+            this.oy = this.attr("y");
+            this.attr({
+                opacity: 1
+            });
+            if (this.attr("y") < 60 && this.attr("x") < 60) this.attr({
+                fill: "#000"
+            });
+        };
+
+        move = function(dx, dy) {
+
+            // move will be called with dx and dy
+            if (this.attr("y") > 200 || this.attr("x") > 300) this.attr({
+                x: this.ox + dx,
+                y: this.oy + dy
+            });
+            else {
+                nowX = Math.min(300, this.ox + dx);
+                nowY = Math.min(200, this.oy + dy);
+                nowX = Math.max(0, nowX);
+                nowY = Math.max(0, nowY);
+                this.attr({
+                    x: nowX,
+                    y: nowY
+                });
+                if (this.attr("fill") != "#000") this.attr({
+                    fill: "#000"
+                });
+            }
+
+        };
+
+        up = function() {
+            // restoring state
+            this.attr({
+                opacity: .5
+            });
+            if (this.attr("y") < 60 && this.attr("x") < 60) this.attr({
+                fill: "#AEAEAE"
+            });
+        };
+
+        function DrawRectangle(x, y, w, h) {
+
+            var element = paper.rect(x, y, w, h);
+            element.attr({
+                fill: "gray",
+                opacity: .5,
+                stroke: "#f58b26"
+            });
+            $(element.node).attr('id', 'rct' + x + y);
+            console.log(element.attr('x'));
+
+            element.drag(move, start, up);
+            element.click(function(e) {
+
+                elemClicked = $(element.node).attr('id');
+
+            });
+
+            return element;
+
+        }
 
         function tagging() {
+            $('#tagging_area').unbind('mousedown');
+            $('#tagging_area').unbind('mousemove');
+            $('#tagging_area').unbind('mouseup');
+            $("#tagging_area").css("z-index", "2000");
+            sketchpad.editing(false);
+
+            $("#tagging_area").mousedown(function(e) {
+                // Prevent text edit cursor while dragging in webkit browsers
+                e.originalEvent.preventDefault();
+
+                var offset = $("#tagging_area").offset();
+                mouseDownX = e.pageX - offset.left;
+                mouseDownY = e.pageY - offset.top;
+
+                rect = DrawRectangle(mouseDownX, mouseDownY, 0, 0);
+
+                $("#tagging_area").mousemove(function(e) {
+                    var offset = $("#tagging_area").offset();
+                    var upX = e.pageX - offset.left;
+                    var upY = e.pageY - offset.top;
+
+                    var width = upX - mouseDownX;
+                    var height = upY - mouseDownY;
+
+                    rect.attr({
+                        "width": width > 0 ? width : 0,
+                        "height": height > 0 ? height : 0
+                    });
+
+                });
+
+            });
+
+            $("#tagging_area").mouseup(function(e) {
+                $('#tagging_area').unbind('mousemove');
+
+                var BBox = rect.getBBox();
+
+                if (BBox.width == 0 && BBox.height == 0) rect.remove();
+
+            });
+
+        }
+
+        $("#clr").click(function(e) {
+            $('#d1').find('rect').each(function(i, obj) {
+                $(this).remove();
+            });
+        });
+
+        $("#del").click(function(e) {
+            $('#' + elemClicked).remove();
+        });
+
+
+        function drawing() {
             if (!sketchpad.editing()) {
+                $('#tagging_area').unbind('mouseup');
+                $('#tagging_area').unbind('mousemove');
+                $('#tagging_area').unbind('mousedown');
+                $("#tagging_area").css("z-index", "0");
                 sketchpad.editing(true);
             } else {
                 sketchpad.editing(false);

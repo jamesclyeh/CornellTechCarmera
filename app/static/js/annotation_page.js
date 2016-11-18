@@ -12,21 +12,21 @@ $('#tags').click(function() {
 $('#sensor-data').click(function() {
     $('#sensor-data-item').slideToggle();
     $('#sensor-data span').toggleText("Sensor Data +", "Sensor Data -");
+});
 
-$('#mark-button').click(function () {
-	$('#mark-button').toggleClass("selected-button");
-	if ($('#mark-button').hasClass("selected-button")) {
-	console.log("yo");
-	$('#tag-button').removeClass("selected-button");
-}
+$('#mark-button').click(function() {
+    $('#mark-button').toggleClass("selected-button");
+    if ($('#mark-button').hasClass("selected-button")) {
+        console.log("yo");
+        $('#tag-button').removeClass("selected-button");
+    }
 });
 
 
-$('#tag-button').click(function () {
-	$('#tag-button').toggleClass("selected-button");
-	if ($('#tag-button').hasClass("selected-button")) {
+$('#tag-button').click(function() {
+    $('#tag-button').toggleClass("selected-button");
+    if ($('#tag-button').hasClass("selected-button")) {
 
-	$('#mark-button').removeClass("selected-button");
-
-}
+        $('#mark-button').removeClass("selected-button");
+    }
 });

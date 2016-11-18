@@ -318,6 +318,12 @@ button {
     width: 100%;
 }
 
+#tagging_area {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
 .lazy {
     width: 210px;
     height: 210px;
