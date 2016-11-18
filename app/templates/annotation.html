@@ -33,12 +33,28 @@
         <div id="drawing_pad"></div> {% for image in images %}
         <img src="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" style="width:100%;" /> {% endfor %}
     </div>
-    <div id="moreInfoWrapper">
-        <div id="results"></div>
-        <div id="tags">Tags +</div>
-        <div id="sensor-data">Sensor Data +</div>
-    </div>
 
+    <div id="moreInfoWrapper">
+    <div id="results"></div>
+        <div id="tags"><span>Tags +</span>
+        <div id="sug" style="display: none;">
+    <ul id="suggested_tags_list" class="tags">
+                            {% for tag in all_tags %}
+                            <li class="suggested_tag">{{'%s' % tag}}</li>
+                            {% endfor %}
+                        </ul>        </div>
+                           </div>
+        <div id="sensor-data"><span>Sensor Data +</span>
+        <div id="sensor-data-item" style="display: none;">
+        {% for image in images %}
+        <div style = "width: 85%;">{{image.json}}</div>
+        {% endfor %}
+        </div>
+        </div>
+        <p style="padding-left: 20px; text-align: center; font-weight: bold;">Notes:</p>
+        <input type="text" style="height: 200px; position: absolute; width: 100%; margin: 5px;">
+        <a class="save" href="http://localhost:5000/" style = "width: 12.5%; font-size: 15px;">Save</a><a class="cancel" href="http://localhost:5000/" style = "width: 12.5%; font-size: 15px;">Cancel</a>
+        </div>
 
     <script>
         jQuery.browser = {};
@@ -63,6 +79,7 @@
         sketchpad.pen().color("#f58b26");
         sketchpad.pen().width(5);
 
+
         function tagging() {
             if (!sketchpad.editing()) {
                 sketchpad.editing(true);
@@ -71,6 +88,8 @@
             }
         }
     </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/annotation_page.js') }}"></script>
+
 </body>
 
 </html>

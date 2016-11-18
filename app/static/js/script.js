@@ -14,3 +14,5 @@ filter.addEventListener('click', function(){
 	results.style.display = "none";
   $('#imageWrap').hide();
 });
+
+

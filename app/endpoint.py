@@ -19,7 +19,7 @@ def annotate(image_id):
   image_id = int(image_id)
   for img in tmp.images:
     if img.image_id == image_id:
-      return render_template('annotation.html', images=[img])
+      return render_template('annotation.html', images=[img], all_tags=img.GetTags())
 
 @app.route("/filterByTag", methods=['POST'])
 def filterByTag():
