@@ -28,8 +28,8 @@
         <div id="informationWrapper">
             <div id="imageWrap">
                 {% for image in images %}
-                <a href="/annotate/{{image.image_id}}">
-                <img class="lazy" data-original="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" />
+                <a id="a_{{image.image_id}}" href="/annotate/{{image.image_id}}">
+                    <img class="lazy" data-original="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" />
                 </a>{% endfor %}
             </div>
             <div id="infoWrap">
@@ -313,11 +313,11 @@
         }
 
         function updateImages(images) {
-            $("#imageWrap").children('img').each(function() {
+            $("#imageWrap").children('a').each(function() {
                 $(this).hide();
             });
             for (i = 0; i < images.length; i++) {
-                $("img#" + images[i].id).show();
+                $("#a_" + images[i].id).show();
             }
         }
     </script>
