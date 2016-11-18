@@ -189,33 +189,21 @@
                         selected.push($(this).text().slice(0, -2));
                     }
                 });
-            if (selected.length == 1 && (selected[0] == 'car' || selected[0] == 'person')) {
-                $.ajax({
-                    type: "POST",
-                    url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
-                    success: function(result) {
-                        images = JSON.parse(result);
+            $.ajax({
+                type: "POST",
+                url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
+                success: function(result) {
+                    images = JSON.parse(result);
+                    if (selected.length == 1 && (selected[0] == 'car' || selected[0] == 'person')) {
                         updateHeatmap(images, selected[0]);
-                        updateImages(images);
-                        $('#imageWrap').show();
-                    },
-                    async: true
-                });
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
-                    success: function(result) {
-                        images = JSON.parse(result);
-                        $('#num_results').text(images.length + ' Results');
+                    } else {
                         updateMarker(images);
-                        updateImages(images);
-                        $('#imageWrap').show();
-                    },
-                    async: true
-                });
-            }
-
+                    }
+                    updateImages(images);
+                    $('#imageWrap').show();
+                },
+                async: true
+            });
         }
 
         function updateHeatmap(images, tag_name) {
