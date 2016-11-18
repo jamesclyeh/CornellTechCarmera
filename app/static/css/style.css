@@ -279,4 +279,11 @@ button {
 
 #drawing_pad {
     position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.lazy {
+    width: 210px;
+    height: 210px;
 }

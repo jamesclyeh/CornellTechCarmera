@@ -28,7 +28,9 @@
         <div id="informationWrapper">
             <div id="imageWrap">
                 {% for image in images %}
-                <img class="lazy" data-original="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" style="width:210px;height:210px;" /> {% endfor %}
+                <a href="/annotate/{{image.image_id}}">
+                <img class="lazy" data-original="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" />
+                </a>{% endfor %}
             </div>
             <div id="infoWrap">
                 <div class="sub-content-wrapper">
@@ -146,7 +148,6 @@
                         'marker-color': '#63b6e5'
                     }));
             });
-
 
             $("#selected_tags_list li").hide();
             $("li.suggested_tag").click(function() {
@@ -280,7 +281,7 @@
 
             markerLayer.on('mouseover', function(e) {
                 var coordinates = e.layer.feature.geometry.coordinates;
-                var swapped_coordinates = [coordinates[1]+0.0001, coordinates[0]]; //Swap Lat and Lng
+                var swapped_coordinates = [coordinates[1] + 0.0001, coordinates[0]]; //Swap Lat and Lng
                 if (map) {
                     layerPopup = L.popup()
                         .setLatLng(swapped_coordinates)
@@ -292,9 +293,9 @@
                     document.body.scrollTop -= 200;
 
                     e.layer.setIcon(
-                    L.mapbox.marker.icon({
-                        'marker-color': '#f58b26'
-                    }));
+                        L.mapbox.marker.icon({
+                            'marker-color': '#f58b26'
+                        }));
                 }
             });
 
@@ -304,9 +305,9 @@
                     //layerPopup = null;
                     document.getElementById(e.layer.feature.properties.id).style.opacity = "1.0";
                     e.layer.setIcon(
-                    L.mapbox.marker.icon({
-                        'marker-color': '#63b6e5'
-                    }));
+                        L.mapbox.marker.icon({
+                            'marker-color': '#63b6e5'
+                        }));
                 }
             });
         }
