@@ -15,4 +15,12 @@ filter.addEventListener('click', function(){
   $('#imageWrap').hide();
 });
 
+// $('#17841354').hover(function () {
+// 	$('#overlay').css('display', 'block');
+// 	$('#hover-info').css('display', 'block');
+// }, function () {
+// 	$('#overlay').css('display', 'none');
+// 	$('#hover-info').css('display', 'none');
+// });
+
 

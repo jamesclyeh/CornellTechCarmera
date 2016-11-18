@@ -195,6 +195,7 @@ h3 {
     flex-wrap: wrap;
 }
 
+
 .sub-content-wrapper {
     margin: 20px;
     margin-top: 6px;
@@ -324,8 +325,66 @@ button {
 }
 
 #results p {
-    display: inline-block;
-    padding-left: 30px;
+ 	display: inline-block;
+ 	padding-left: 30px;
+ }
+
+ #tags {
+ 	background-color: white;
+ 	width: 100%;
+ 	margin-bottom: 20px;
+ 	margin-top: 20px;
+ 	padding-left: 20px;
+ 	padding-top: 10px;
+ 	padding-bottom: 10px;
+ }
+
+  #sensor-data {
+ 	background-color: white;
+ 	width: 100%;
+ 	padding-left: 20px;
+ 	padding-top: 10px;
+ 	padding-bottom: 10px;
+ }
+
+.hover-info p {
+	text-decoration: none;
+ 	color: white;
+ 	margin: 0;
+} 
+
+
+.hover-info {
+	position: absolute;
+	margin-left: 10px;
+	margin-top: 10px;
+
+}
+
+.overlay {
+	position: absolute;
+	background-color: black;
+	width: 210px;
+	height: 210px;
+	margin-left: 1px;
+	opacity: 0.6;
+}
+
+.hover-wrapper {
+	opacity: 0.0;
+	position: absolute;
+	width: 210px;
+	height: 210px;
+	transition: 0.3s;
+}
+
+.hover-wrapper:hover {
+	opacity: 1.0;
+}
+
+.hover-wrapper:hover .hover_a {
+	z-index: 999999999;
+	position: absolute;
 }
 
 #tags {
@@ -345,3 +404,6 @@ button {
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
+
+

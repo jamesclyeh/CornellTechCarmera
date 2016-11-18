@@ -28,9 +28,25 @@
         <div id="informationWrapper">
             <div id="imageWrap">
                 {% for image in images %}
-                <a id="a_{{image.image_id}}" href="/annotate/{{image.image_id}}">
+                <div>
+                <div class="hover-wrapper">
+                <div class="overlay"></div>
+                <div class="hover-info">
+                    <p style="font-weight:bold;">Image ID</p>
+                    <p style="font-weight:lighter; font-family: 'avenir';">{{image.image_id}}</p>
+                    <p style="font-weight:bold;">Position</p>
+                    <p style="font-weight:lighter; font-family: 'avenir';">FL</p>
+                    <p style="font-weight:bold;">Captured</p>
+                    <p style="font-weight:lighter; font-family: 'avenir';">Oct {{image.captured_on}}</p>
+                </div>
+                </div>
+                <a class="hover_a" id="a_{{image.image_id}}" href="/annotate/{{image.image_id}}">
                     <img class="lazy" data-original="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" />
-                </a>{% endfor %}
+                    
+                
+                </a></div>{% endfor %}
+
+
             </div>
             <div id="infoWrap">
                 <div class="sub-content-wrapper">
@@ -105,8 +121,11 @@
                     </div>
 
                 </div>
+                
+                
 
                 <button class="save">Save</button><button class="cancel">Cancel</button>
+
 
             </div>
             <div id="results" style="display: none;">
@@ -189,21 +208,33 @@
                         selected.push($(this).text().slice(0, -2));
                     }
                 });
-            $.ajax({
-                type: "POST",
-                url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
-                success: function(result) {
-                    images = JSON.parse(result);
-                    if (selected.length == 1 && (selected[0] == 'car' || selected[0] == 'person')) {
+            if (selected.length == 1 && (selected[0] == 'car' || selected[0] == 'person')) {
+                $.ajax({
+                    type: "POST",
+                    url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
+                    success: function(result) {
+                        images = JSON.parse(result);
                         updateHeatmap(images, selected[0]);
-                    } else {
+                        updateImages(images);
+                        $('#imageWrap').show();
+                    },
+                    async: true
+                });
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: 'http://localhost:5000/filterByTag?tags=' + selected.join(),
+                    success: function(result) {
+                        images = JSON.parse(result);
+                        $('#num_results').text(images.length + ' Results');
                         updateMarker(images);
-                    }
-                    updateImages(images);
-                    $('#imageWrap').show();
-                },
-                async: true
-            });
+                        updateImages(images);
+                        $('#imageWrap').show();
+                    },
+                    async: true
+                });
+            }
+
         }
 
         function updateHeatmap(images, tag_name) {
