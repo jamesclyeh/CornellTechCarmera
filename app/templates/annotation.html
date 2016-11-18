@@ -8,9 +8,11 @@
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20160511/json2.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.lazyload.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/leaflet-heat.js') }}"></script>
-
+    <script type="text/javascript" src="{{ url_for('static', filename='js/raphael-2.0.1.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/raphael.sketchpad.js') }}"></script>
 </head>
 
 <body>
@@ -19,27 +21,55 @@
             <div class="logo"></div>
             <div id="carmera">Carmera <span id="dataExplorer">Data Explorer <span id="beta">Beta</span></span>
             </div>
-        </nav> 
+        </nav>
     </header>
 
     <div id="side-nav">
         <div><img src="static/css/img/tag.png" width="60%"></div>
-        <div><img src="static/css/img/mark.png" width="60%"></div>
+        <div><img src="static/css/img/mark.png" width="60%" onclick="tagging();"></div>
     </div>
 
-    <div id="image-annotated">  {% for image in images %}
+    <div id="image-annotated">
+        <div id="drawing_pad"></div> {% for image in images %}
         <img src="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" style="width:100%;" /> {% endfor %}
-        </div>
+    </div>
     <div id="moreInfoWrapper">
-    <div id="results"></div>
+        <div id="results"></div>
         <div id="tags">Tags +</div>
         <div id="sensor-data">Sensor Data +</div>
     </div>
 
 
+    <script>
+        jQuery.browser = {};
+        (function() {
+            jQuery.browser.msie = false;
+            jQuery.browser.version = 0;
+            if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+                jQuery.browser.msie = true;
+                jQuery.browser.version = RegExp.$1;
+            }
+        })();
+        var sketchpad = Raphael.sketchpad("drawing_pad", {
+            width: 800,
+            height: 400,
+            editing: false
+        });
+        // When the sketchpad changes, update the input field.
+        sketchpad.change(function() {
+            $("#data").val(sketchpad.json());
+        });
 
-   <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+        sketchpad.pen().color("#f00");
 
+        function tagging() {
+            if (!sketchpad.editing()) {
+                sketchpad.editing(true);
+            } else {
+                sketchpad.editing(false);
+            }
+        }
+    </script>
 </body>
 
 </html>
