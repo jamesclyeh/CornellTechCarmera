@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Carmera</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.lazyload.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/leaflet-heat.js') }}"></script>
+
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo"></div>
+            <div id="carmera">Carmera <span id="dataExplorer">Data Explorer <span id="beta">Beta</span></span>
+            </div>
+        </nav> 
+    </header>
+
+    <div id="side-nav">
+        <div><img src="static/css/img/tag.png" width="60%"></div>
+        <div><img src="static/css/img/mark.png" width="60%"></div>
+    </div>
+
+    <div id="image-annotated">  {% for image in images %}
+        <img src="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" style="width:100%;" /> {% endfor %}
+        </div>
+    <div id="moreInfoWrapper">
+    <div id="results"></div>
+        <div id="tags">Tags +</div>
+        <div id="sensor-data">Sensor Data +</div>
+    </div>
+
+
+
+   <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
