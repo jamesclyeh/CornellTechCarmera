@@ -175,10 +175,6 @@ h3 {
     text-decoration: none;
 }
 
-#moreInfoWrapper #results {
-    top: 50px;
-}
-
 #informationWrapper {
     /*	flex: 0 1 60%;*/
     width: 60%;
@@ -279,7 +275,7 @@ button {
 
 #results {
     top: 0px;
-    width: 100%;
+    width: 25%;
     /*	right: 0;*/
     background-color: gray;
     position: absolute;

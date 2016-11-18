@@ -13,7 +13,7 @@ class Singleton(object):
 class FakeDB(Singleton):
   def __init__(self):
     self.images = []
-    with open('images/data.json') as f:
+    with open('images/tagged_data.json') as f:
       self.data = json.load(f)
       for d in self.data:
         self.images.append(Image(d['id'], d['captured_on'], d['lat'], d['lon'], d['tags'], d))
@@ -38,17 +38,23 @@ class Image:
     self.lat = lat
     self.lon = lon
     self.json = json
+    self.tags = []
     if tags:
       self.tags = tags
+    """
     else:
       self.tags = []
       for tag in self.FAKE_TAGS:
         if random.random() < 0.3:
           self.tags.append({'tag': tag, 'h': 0, 'w': 0, 'x': 0, 'y': 0})
     self.json['tags'] = self.tags
+    """
 
   def GetTags(self):
     return [t['tag'] for t in self.tags]
+
+  def GetCompleteTags(self):
+    return self.tags
 
   def __repr__(self):
     return '<Image %r>' % (self.image_id)

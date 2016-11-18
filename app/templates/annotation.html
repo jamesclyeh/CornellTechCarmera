@@ -31,26 +31,26 @@
 
     <div id="image-annotated">
         <div id="tagging_area"></div>
-        <div id="drawing_pad"></div> {% for image in images %}
-        <img src="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="{{image.image_id}}" style="width:100%;" /> {% endfor %}
+        <div id="drawing_pad"></div>
+        <img src="{{ url_for('pictures', filename='%s.jpg'%(image.image_id))}}" id="street_image" style="width:100%;" />
     </div>
 
     <div id="moreInfoWrapper">
-        <div id="results"></div>
+        <div id="results" style="text-align: center;">
+            <p>Image ID: {{image.image_id}}</p>
+        </div>
         <div id="tags"><span>Tags +</span>
             <div id="sug" style="display: none;">
                 <ul id="suggested_tags_list" class="tags">
                     {% for tag in all_tags %}
-                    <li class="suggested_tag">{{'%s' % tag}}</li>
+                    <li class="suggested_tag" id="{{ loop.index0 }}">{{'%s' % tag.tag}}</li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
         <div id="sensor-data"><span>Sensor Data +</span>
             <div id="sensor-data-item" style="display: none;">
-                {% for image in images %}
                 <div style="width: 85%;">{{image.json}}</div>
-                {% endfor %}
             </div>
         </div>
         <p style="padding-left: 20px; text-align: center; font-weight: bold;">Notes:</p>
@@ -59,6 +59,22 @@
     </div>
 
     <script>
+        var all_tags = {{all_tags | tojson}};
+        var hover_rect;
+        $(document).ready(function() {
+            $('.suggested_tag').hover(function (e) {
+                var index = e.currentTarget.id;
+                var offset = $("#street_image").offset();
+                var scale_y = $("#street_image")[0].height / $("#street_image")[0].naturalHeight;
+                var scale_x = $("#street_image")[0].width / $("#street_image")[0].naturalWidth;
+                hover_rect = DrawRectangle(all_tags[index].roi.x * scale_x - offset.left,
+                                     all_tags[index].roi.y * scale_y - offset.top + 50,
+                all_tags[index].roi.w * scale_x, all_tags[index].roi.h * scale_y);
+                hover_rect.attr({opacity: 1});
+            }, function (e) {
+                hover_rect.remove();
+            });
+        });
         jQuery.browser = {};
         (function() {
             jQuery.browser.msie = false;
@@ -134,9 +150,9 @@
 
             var element = paper.rect(x, y, w, h);
             element.attr({
-                fill: "gray",
                 opacity: .5,
-                stroke: "#f58b26"
+                stroke: "#f58b26",
+                "stroke-width": '3',
             });
             $(element.node).attr('id', 'rct' + x + y);
             console.log(element.attr('x'));
